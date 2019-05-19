@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">AAPZ_mobile</string>
+    <string name="app_name">DisDet for drivers</string>
+    <string name="current_ride_length">Current ride length</string>
+    <string name="start_ride_btn_text">START RIDE</string>
+    <string name="connecting">Connecting…</string>
+    <string name="please_wait">Please wait</string>
+    <string name="connect">Connect to camera</string>
 </resources>
