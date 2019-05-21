@@ -6,4 +6,7 @@
     <string name="connect">З\'єднатися з камерою</string>
     <string name="connecting">З\'єднання…</string>
     <string name="please_wait">Будь ласка, зачекайте</string>
+    <string name="end_ride_btn_text">ЗАВЕРШИТИ ПОЇЗДКУ</string>
+    <string name="connected">З\'єднано</string>
+    <string name="hello">"Вітаєемо, "</string>
 </resources>

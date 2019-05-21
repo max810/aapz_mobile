@@ -20,11 +20,14 @@ import org.jetbrains.anko.toast
 import java.io.IOException
 import java.util.*
 
+
 class MainActivity : AppCompatActivity() {
 
     private var bluetoothAdapter: BluetoothAdapter? = null
-    private lateinit var pairedDevices: Set<BluetoothDevice>
     private val REQUEST_ENABLE_BLUETOOTH = 1
+    private var seconds = 0
+    private lateinit var timer: Timer
+    private var timerRunning = false
 
     companion object {
         var myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -52,6 +55,69 @@ class MainActivity : AppCompatActivity() {
         connect_button.setOnClickListener {
             ConnectToDevice(this, connect_button).execute()
         }
+
+        startRideButton.setOnClickListener {
+            if (!timerRunning) {
+                currentLengthTextView.text = "00:00:00"
+                seconds = 0
+                timer = Timer()
+                timer.scheduleAtFixedRate(
+                    object : TimerTask() {
+                        override fun run() {
+                            seconds++
+                            var x = seconds
+                            val secs = x % 60
+                            x /= 60
+                            val minutes = x % 60
+                            x /= 60
+                            val hours = x % 24
+                            currentLengthTextView.text =
+                                String.format("%02d:%02d:%02d", hours, minutes, secs)
+                        }
+                    },
+                    1000, 1000
+                )
+                timerRunning = true
+            }
+            sendCommand("1")
+
+        }
+        endRideButton.setOnClickListener {
+            if (timerRunning) {
+                timer.cancel()
+                timerRunning = false
+            }
+
+            sendCommand("0")
+        }
+    }
+
+    override fun onStop() {
+        disconnect()
+        super.onStop()
+    }
+
+    private fun sendCommand(input: String) {
+        if (bluetoothSocket != null) {
+            try {
+                bluetoothSocket!!.outputStream.write(input.toByteArray())
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun disconnect() {
+        if (bluetoothSocket != null) {
+            try {
+                bluetoothSocket!!.close()
+                bluetoothSocket = null
+                isConnected = false
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        finish()
     }
 
     private class ConnectToDevice(c: Context, connectBtn: Button) : AsyncTask<Void, Void, String>() {

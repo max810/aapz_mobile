@@ -5,4 +5,7 @@
     <string name="connecting">Connecting…</string>
     <string name="please_wait">Please wait</string>
     <string name="connect">Connect to camera</string>
+    <string name="end_ride_btn_text">END RIDE</string>
+    <string name="connected">Connected</string>
+    <string name="hello">"Hello, "</string>
 </resources>
